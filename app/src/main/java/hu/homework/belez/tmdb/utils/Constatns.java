@@ -8,5 +8,5 @@ public class Constatns {
 
     public static final String TMDB_API_KEY = "43a7ea280d085bd0376e108680615c7f";
 
-    public static final String TMDB_BASE_URL = "https://api.themoviedb.org/3";
+    public static final String TMDB_BASE_URL = "https://api.themoviedb.org/3/";
 }
