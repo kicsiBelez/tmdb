@@ -1,18 +1,24 @@
 package hu.homework.belez.tmdb.views.activity;
 
 import android.app.AlertDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.InjectMenu;
+import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
@@ -27,7 +33,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 @EActivity(R.layout.activity_search)
-@OptionsMenu(R.menu.search_menu)
 public class SearchActivity extends AppCompatActivity {
 
     @ViewById(R.id.search_list)
@@ -37,6 +42,27 @@ public class SearchActivity extends AppCompatActivity {
     ProgressBar progressBar;
 
     SearchListAdapter adapter;
+
+    @InstanceState
+    String query;
+
+    @InjectMenu
+    void setMenu(Menu searchMenu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_menu, searchMenu);
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) searchMenu.findItem(R.id.menu_item_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            query = intent.getStringExtra(SearchManager.QUERY);
+            performSearch(query, 1);
+        }
+    }
 
     @AfterViews
     void afterViews() {
@@ -55,15 +81,17 @@ public class SearchActivity extends AppCompatActivity {
                 public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                     if((firstVisibleItem + visibleItemCount == totalItemCount)
                             && adapter.getPage() != null && adapter.getTotalPages() != null && (adapter.getPage() < adapter.getTotalPages())){
-                        //performSearch("transformers", adapter.getPage() + 1);
+                        performSearch("transformers", adapter.getPage() + 1);
                     }
                 }
             });
-            performSearch("transformers", 1);
+
+            if (query != null) {
+                performSearch(query, 1);
+            }
         }
     }
 
-    @Background
     void performSearch(String keyWord, Integer page) {
         startProgress();
         TMDBService.getInstance().searchMovie("en-US", keyWord, page, false).enqueue(new Callback<Search>() {
