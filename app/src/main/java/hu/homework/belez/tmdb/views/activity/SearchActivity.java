@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -35,8 +36,6 @@ public class SearchActivity extends AppCompatActivity {
     @ViewById(R.id.search_progress)
     ProgressBar progressBar;
 
-
-
     SearchListAdapter adapter;
 
     @AfterViews
@@ -46,19 +45,35 @@ public class SearchActivity extends AppCompatActivity {
         if (adapter == null) {
             adapter = new SearchListAdapter(SearchActivity.this, null);
             movieList.setAdapter(adapter);
-            performSearch();
+            movieList.setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+                }
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    if((firstVisibleItem + visibleItemCount == totalItemCount)
+                            && adapter.getPage() != null && adapter.getTotalPages() != null && (adapter.getPage() < adapter.getTotalPages())){
+                        //performSearch("transformers", adapter.getPage() + 1);
+                    }
+                }
+            });
+            performSearch("transformers", 1);
         }
     }
 
     @Background
-    void performSearch() {
+    void performSearch(String keyWord, Integer page) {
         startProgress();
-        TMDBService.getInstance().searchMovie("en-US", "transformers", 1, false).enqueue(new Callback<Search>() {
+        TMDBService.getInstance().searchMovie("en-US", keyWord, page, false).enqueue(new Callback<Search>() {
             @Override
             public void onResponse(Call<Search> call, Response<Search> response) {
                 stopProgress();
                 if (response.isSuccessful()) {
                     adapter.addMovies(response.body().getResults());
+                    adapter.setTotalPages(response.body().getTotal_pages());
+                    adapter.setPage(response.body().getPage());
                     adapter.notifyDataSetInvalidated();
                 } else {
                     String errorMessage = null;

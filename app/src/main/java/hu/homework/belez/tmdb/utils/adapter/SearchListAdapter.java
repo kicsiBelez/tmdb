@@ -5,7 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -18,9 +21,13 @@ import hu.homework.belez.tmdb.model.Movie;
 
 public class SearchListAdapter extends BaseAdapter {
 
-    Context context;
+    private Context context;
 
-    ArrayList<Movie> movies;
+    private ArrayList<Movie> movies;
+
+    private Integer totalPages;
+
+    private Integer page;
 
     public SearchListAdapter(Context context, ArrayList<Movie> movies) {
         this.context = context;
@@ -41,6 +48,22 @@ public class SearchListAdapter extends BaseAdapter {
 
     public void addMovies(ArrayList<Movie> movies) {
         this.movies.addAll(movies);
+    }
+
+    public Integer getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(Integer totalPages) {
+        this.totalPages = totalPages;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
     }
 
     @Override
@@ -66,7 +89,17 @@ public class SearchListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.view_movie_item, parent, false);
         }
 
-        ((TextView) convertView.findViewById(R.id.movie_item_title)).setText(getItem(position).getTitle());
+        TextView title = (TextView) convertView.findViewById(R.id.movie_item_title);
+        ImageView image = (ImageView) convertView.findViewById(R.id.movie_item_image);
+
+        title.setText(getItem(position).getTitle());
+        Picasso.with(context)
+                .load(movies.get(position).getPoster_path())
+                .placeholder(R.mipmap.ic_launcher_round)
+                .error(R.mipmap.ic_launcher_round)
+                .resize(300, 300)
+                .into(image);
+
         return convertView;
     }
 }
