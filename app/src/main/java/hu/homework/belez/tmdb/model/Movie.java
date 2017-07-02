@@ -4,33 +4,33 @@ package hu.homework.belez.tmdb.model;
  * Created by Belez on 2017. 07. 02..
  */
 
-public class Movie {
+public class Movie extends ResponseEntity{
 
-    Integer id;
+    private Integer id;
 
-    Boolean adult;
+    private Boolean adult;
 
-    String backdrop_path;
+    private String backdrop_path;
 
-    String original_language;
+    private String original_language;
 
-    String original_title;
+    private String original_title;
 
-    String overview;
+    private String overview;
 
-    Double popularity;
+    private Double popularity;
 
-    String poster_path;
+    private String poster_path;
 
-    String release_date;
+    private String release_date;
 
-    String title;
+    private String title;
 
-    Boolean video;
+    private Boolean video;
 
-    Double vote_average;
+    private Double vote_average;
 
-    Integer vote_count;
+    private Integer vote_count;
 
     public Movie() {
         super();

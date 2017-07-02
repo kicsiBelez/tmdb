@@ -1,20 +1,20 @@
-package hu.homework.belez.tmdb.connectivity.model;
+package hu.homework.belez.tmdb.model;
 
 /**
  * Created by Belez on 2017. 07. 02..
  */
 
-public class Error {
+public class ResponseEntity {
 
     Integer status_code;
 
     String status_message;
 
-    public Error() {
+    public ResponseEntity() {
         super();
     }
 
-    public Error(Integer status_code, String status_message) {
+    public ResponseEntity(Integer status_code, String status_message) {
         this.status_code = status_code;
         this.status_message = status_message;
     }
@@ -34,4 +34,5 @@ public class Error {
     public void setStatus_message(String status_message) {
         this.status_message = status_message;
     }
+
 }

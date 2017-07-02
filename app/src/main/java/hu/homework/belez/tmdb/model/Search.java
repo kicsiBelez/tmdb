@@ -6,15 +6,15 @@ import java.util.ArrayList;
  * Created by Belez on 2017. 07. 02..
  */
 
-public class Search {
+public class Search extends ResponseEntity{
 
-    Integer page;
+    private Integer page;
 
-    Integer total_results;
+    private Integer total_results;
 
-    Integer total_pages;
+    private Integer total_pages;
 
-    ArrayList<Movie> results;
+    private ArrayList<Movie> results;
 
     public Search() {
         super();
