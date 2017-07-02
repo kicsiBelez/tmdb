@@ -14,7 +14,6 @@ import org.androidannotations.annotations.ViewById;
 import hu.homework.belez.tmdb.R;
 import hu.homework.belez.tmdb.connectivity.TMDBService;
 import hu.homework.belez.tmdb.model.Search;
-import hu.homework.belez.tmdb.utils.Constatns;
 import hu.homework.belez.tmdb.utils.adapter.SearchListAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,7 +44,7 @@ public class SearchActivity extends AppCompatActivity {
 
     @Background
     void performSearch() {
-        TMDBService.getInstance().searchMovie(Constatns.TMDB_API_KEY, "en-US", "transformers", 1, false).enqueue(new Callback<Search>() {
+        TMDBService.getInstance().searchMovie("en-US", "transformers", 1, false).enqueue(new Callback<Search>() {
             @Override
             public void onResponse(Call<Search> call, Response<Search> response) {
                 if (response.isSuccessful()) {

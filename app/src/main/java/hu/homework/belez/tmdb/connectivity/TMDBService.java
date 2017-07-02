@@ -3,6 +3,7 @@ package hu.homework.belez.tmdb.connectivity;
 import hu.homework.belez.tmdb.model.Movie;
 import hu.homework.belez.tmdb.model.Search;
 import hu.homework.belez.tmdb.utils.Constatns;
+import hu.homework.belez.tmdb.utils.QueryParamHelper;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -35,11 +36,11 @@ public class TMDBService {
         service = retrofit.create(ITMDB.class);
     }
 
-    public Call<Search> searchMovie(String apiKey, String lang, String keyWord, Integer page, Boolean includeAdult) {
-        return service.search(apiKey, lang, keyWord, page, includeAdult);
+    public Call<Search> searchMovie(String lang, String keyWord, Integer page, Boolean includeAdult) {
+        return service.search(QueryParamHelper.generateQuerzParamsForSearch(lang, keyWord, page, includeAdult));
     }
 
-    public Call<Movie> getMovieDetail(Integer movieId, String apiKey, String lang) {
-        return service.detail(movieId, apiKey, lang);
+    public Call<Movie> getMovieDetail(Integer movieId, String lang) {
+        return service.detail(movieId, QueryParamHelper.generateQuerzParamsForDetail(lang));
     }
 }

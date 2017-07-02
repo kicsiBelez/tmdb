@@ -28,7 +28,7 @@ public class Movie {
 
     Boolean video;
 
-    Integer vote_average;
+    Double vote_average;
 
     Integer vote_count;
 
@@ -36,7 +36,7 @@ public class Movie {
         super();
     }
 
-    public Movie(Integer id, Boolean adult, String backdrop_path, String original_language, String original_title, String overview, Double popularity, String poster_path, String release_date, String title, Boolean video, Integer vote_average, Integer vote_count) {
+    public Movie(Integer id, Boolean adult, String backdrop_path, String original_language, String original_title, String overview, Double popularity, String poster_path, String release_date, String title, Boolean video, Double vote_average, Integer vote_count) {
         this.id = id;
         this.adult = adult;
         this.backdrop_path = backdrop_path;
@@ -140,11 +140,11 @@ public class Movie {
         this.video = video;
     }
 
-    public Integer getVote_average() {
+    public Double getVote_average() {
         return vote_average;
     }
 
-    public void setVote_average(Integer vote_average) {
+    public void setVote_average(Double vote_average) {
         this.vote_average = vote_average;
     }
 
